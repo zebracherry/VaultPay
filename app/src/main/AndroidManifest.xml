@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- [M6 / MASVS-PRIVACY-2] Excessive, unjustified permissions for a wallet app. -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:label="VaultPay"
+        android:theme="@android:style/Theme.Material.Light">
+        <!-- [M8 / MASVS-CODE-3] allowBackup=true -> `adb backup` extracts app data unencrypted.
+             [M8 / MASVS-CODE-3] debuggable=true -> attach a debugger / run-as any user data.
+             [M5 / MASVS-NETWORK-1] usesCleartextTraffic=true -> plain HTTP permitted. -->
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- [M4 / MASVS-PLATFORM-2] Exported activity that renders a deep-link param in a WebView.
+             Trigger:  adb shell am start -a android.intent.action.VIEW \
+                       -d "vaultpay://open?url=https://evil.example/x" nz.co.vaultpay -->
+        <activity
+            android:name=".web.DeepLinkWebViewActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="vaultpay" android:host="open" />
+            </intent-filter>
+        </activity>
+
+        <!-- [M8 / MASVS-PLATFORM-1] Exported ContentProvider with no permission -> any app reads the vault. -->
+        <provider
+            android:name=".data.VaultProvider"
+            android:authorities="nz.co.vaultpay.provider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+    </application>
+</manifest>

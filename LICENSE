@@ -19,13 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-ADDITIONAL NOTICE — INTENTIONALLY VULNERABLE SOFTWARE
-
-VaultPay is deliberately insecure and exists solely for security education and
-authorised testing practice. It must only be built and run in isolated
-environments (emulators or dedicated test devices). Do not deploy it, publish
-built artifacts to any app store, or run it on a device holding real data. The
-authors accept no liability for misuse.
